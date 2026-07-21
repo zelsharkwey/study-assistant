@@ -15,8 +15,8 @@ The approach, in plain English:
    use as the answer/definition (the sentence that mentions the
    concept and is the most informative).
 3. Build flashcards in the format:
-       Question: What is <concept>?
-       Answer: <sentence that explains it>
+       Term: <concept>
+       Definition: <sentence that explains it>
 """
 
 import re
@@ -140,7 +140,7 @@ def generate_flashcards(raw_text, min_cards=10):
     Returns
     -------
     list[dict]
-        Each dict has the shape: {"question": str, "answer": str}
+        Each dict has the shape: {"term": str, "definition": str}
     """
     cleaned = clean_text(raw_text)
     sentences = split_into_sentences(cleaned)
@@ -171,8 +171,8 @@ def generate_flashcards(raw_text, min_cards=10):
 
         used_sentences.add(answer)
         flashcards.append({
-            "question": f"What is {concept}?",
-            "answer": answer,
+            "term": concept,
+            "definition": answer,
         })
 
         # Stop once we have a generous number of flashcards so the

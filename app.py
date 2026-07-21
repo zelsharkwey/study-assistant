@@ -25,9 +25,82 @@ from summarizer import generate_summary
 from flashcards import generate_flashcards
 
 
+def inject_custom_css():
+    """Inject custom CSS for enhanced dark mode styling."""
+    st.markdown(
+        """
+        <style>
+        /* Main app background */
+        .stApp {
+            background-color: #0E1117;
+        }
+        /* Card styling for expanders (flashcards) */
+        .streamlit-expanderHeader {
+            background-color: #1E1E2E !important;
+            border: 1px solid #333 !important;
+            border-radius: 8px !important;
+            color: #E0E0E0 !important;
+        }
+        .streamlit-expanderContent {
+            background-color: #161622 !important;
+            border: 1px solid #333 !important;
+            border-top: none !important;
+            border-radius: 0 0 8px 8px !important;
+            color: #B0B0B0 !important;
+        }
+        /* Info/Success/Warning boxes */
+        .stAlert {
+            background-color: #1E1E2E !important;
+            border: 1px solid #333 !important;
+            color: #E0E0E0 !important;
+        }
+        /* File uploader */
+        .stFileUploader {
+            background-color: #1E1E2E !important;
+            border: 1px dashed #4FC3F7 !important;
+            border-radius: 8px !important;
+            padding: 10px;
+        }
+        /* Buttons */
+        .stButton button {
+            background-color: #4FC3F7 !important;
+            color: #0E1117 !important;
+            border: none !important;
+            border-radius: 6px !important;
+            font-weight: 600 !important;
+        }
+        .stButton button:hover {
+            background-color: #29B6F6 !important;
+        }
+        /* Text input / text area */
+        .stTextArea textarea {
+            background-color: #1E1E2E !important;
+            color: #E0E0E0 !important;
+            border: 1px solid #333 !important;
+        }
+        /* Headers */
+        h1, h2, h3 {
+            color: #4FC3F7 !important;
+        }
+        /* Spinner */
+        .stSpinner > div {
+            border-top-color: #4FC3F7 !important;
+        }
+        /* Success message */
+        .st-emotion-cache-1dp5vir {
+            background-color: #1E1E2E !important;
+            color: #4FC3F7 !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_header():
     """Display the app title and a short description."""
     st.set_page_config(page_title="AI Study Assistant", page_icon="📚", layout="centered")
+    inject_custom_css()
     st.title("📚 AI Study Assistant")
     st.write(
         "Upload a PDF lecture and get an instant **summary** and a set of "
@@ -60,18 +133,18 @@ def render_summary_section(summary_sentences):
 
 
 def render_flashcards_section(flashcards):
-    """Display flashcards as expandable Question/Answer cards."""
+    """Display flashcards as expandable Term/Definition cards."""
     st.header("3️⃣ Flashcards")
 
     if not flashcards:
         st.info("No flashcards could be generated for this document.")
         return
 
-    st.write(f"Generated **{len(flashcards)} flashcards**. Click each question to reveal the answer.")
+    st.write(f"Generated **{len(flashcards)} flashcards**. Click each term to reveal its definition.")
 
     for index, card in enumerate(flashcards, start=1):
-        with st.expander(f"Card {index}: {card['question']}"):
-            st.markdown(f"**Answer:** {card['answer']}")
+        with st.expander(f"Card {index}: {card['term']}"):
+            st.markdown(f"**Definition:** {card['definition']}")
 
 
 def main():
